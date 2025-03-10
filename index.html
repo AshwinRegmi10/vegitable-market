@@ -1,0 +1,36 @@
+<h1>Checkout</h1>
+    <ul id="checkout-cart"></ul>
+
+    <h3>Total: $<span id="total-price">0</span></h3>
+
+    <h2>Payment Options</h2>
+    <button onclick="payWithEsewa()">Pay with eSewa</button>
+    <button onclick="payWithKhalti()">Pay with Khalti</button>
+    <button onclick="payWithCreditCard()">Pay with Credit Card</button>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const cartList = document.getElementById("checkout-cart");
+        let totalPrice = 0;
+
+        cart.forEach(item => {
+            const li = document.createElement("li");
+            li.innerText = `${item.name} - $${item.price} x ${item.quantity}`;
+            cartList.appendChild(li);
+            totalPrice += item.price * item.quantity;
+        });
+
+        document.getElementById("total-price").innerText = totalPrice;
+
+        function payWithEsewa() {
+            window.location.href = "https://esewa.com.np/#/home";
+        }
+
+        function payWithKhalti() {
+            window.location.href = "https://khalti.com/";
+        }
+
+        function payWithCreditCard() {
+            alert("Redirecting to secure credit card payment page...");
+        }
+    </script>
