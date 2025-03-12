@@ -27,6 +27,13 @@
             background-color: red; color: white;
             border: none; padding: 5px; cursor: pointer;
         }
+        .payment-options {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .payment-options button {
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
@@ -81,6 +88,26 @@
             <button class="btn btn-success" onclick="checkout()">Proceed to Payment</button>
         </div>
     </section>
+
+    <!-- Payment Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalLabel">Select Payment Method</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <h4>Total Amount: ₹<span id="paymentAmount">0</span></h4>
+                    <div class="payment-options">
+                        <button class="btn btn-primary" onclick="processPayment('Credit Card')">Pay with Credit Card</button>
+                        <button class="btn btn-success" onclick="processPayment('eSewa')">Pay with eSewa</button>
+                        <button class="btn btn-info" onclick="processPayment('Khalti')">Pay with Khalti</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer class="bg-dark text-white text-center py-3">
         <p>&copy; 2025 Vegetable Market. All Rights Reserved.</p>
@@ -137,49 +164,27 @@
         }
 
         function updateCartUI() {
-            const cartList = document.getElementById("cart-items");
-            const subtotalElement = document.getElementById("subtotal");
-
-            cartList.innerHTML = "";
-            let subtotal = 0;
-
-            if (cart.length === 0) {
-                subtotalElement.innerText = "0";
-                return;
-            }
-
-            cart.forEach((item, index) => {
-                subtotal += item.price * item.quantity;
-                const li = document.createElement("li");
-                li.classList.add("cart-item");
-                li.innerHTML = `${item.name} - ₹${item.price} x ${item.quantity} 
-                    <button onclick="removeFromCart(${index})">Remove</button>`;
-                cartList.appendChild(li);
-            });
-
-            subtotalElement.innerText = subtotal.toFixed(2);
+            let subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+            document.getElementById("subtotal").innerText = subtotal.toFixed(2);
             localStorage.setItem("cart", JSON.stringify(cart));
-        }
-
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCartUI();
         }
 
         function checkout() {
             if (cart.length === 0) {
-                alert("Your cart is empty. Add items before proceeding to payment.");
+                alert("Your cart is empty.");
                 return;
             }
 
-            let totalAmount = document.getElementById("subtotal").innerText;
+            document.getElementById("paymentAmount").innerText = document.getElementById("subtotal").innerText;
+            new bootstrap.Modal(document.getElementById("paymentModal")).show();
+        }
 
-            if (confirm(`Proceed to payment of ₹${totalAmount}?`)) {
-                alert("Payment successful! Your order has been placed.");
-                cart = []; // Clear the cart after payment
-                localStorage.removeItem("cart"); // Remove cart data from localStorage
-                updateCartUI(); // Refresh cart UI
-            }
+        function processPayment(method) {
+            alert(`Payment successful via ${method}! Your order has been placed.`);
+            cart = [];
+            localStorage.removeItem("cart");
+            updateCartUI();
+            bootstrap.Modal.getInstance(document.getElementById("paymentModal")).hide();
         }
 
         document.addEventListener("DOMContentLoaded", () => {
