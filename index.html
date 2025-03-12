@@ -18,8 +18,15 @@
             max-width: 500px;
             margin: auto;
         }
-        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 5px 10px; border-bottom: 1px solid #ddd; }
-        .cart-item button { background-color: red; color: white; border: none; padding: 5px; cursor: pointer; }
+        .cart-item {
+            display: flex; justify-content: space-between;
+            align-items: center; padding: 5px 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .cart-item button {
+            background-color: red; color: white;
+            border: none; padding: 5px; cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -160,11 +167,18 @@
         }
 
         function checkout() {
-            let paymentMethod = prompt("Choose Payment Method: eSewa or Khalti");
-            if (paymentMethod.toLowerCase() === "esewa" || paymentMethod.toLowerCase() === "khalti") {
-                alert(`Redirecting to ${paymentMethod} for payment...`);
-            } else {
-                alert("Invalid payment method. Please try again.");
+            if (cart.length === 0) {
+                alert("Your cart is empty. Add items before proceeding to payment.");
+                return;
+            }
+
+            let totalAmount = document.getElementById("subtotal").innerText;
+
+            if (confirm(`Proceed to payment of ₹${totalAmount}?`)) {
+                alert("Payment successful! Your order has been placed.");
+                cart = []; // Clear the cart after payment
+                localStorage.removeItem("cart"); // Remove cart data from localStorage
+                updateCartUI(); // Refresh cart UI
             }
         }
 
