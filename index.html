@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vegetable Market</title>
+    <title>Ashwin Vegetable Market</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .hero-section {
@@ -88,29 +88,62 @@
             <button class="btn btn-success" onclick="checkout()">Proceed to Payment</button>
         </div>
     </section>
+    <!-- Updated Payment Modal with Input Fields -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paymentModalLabel">Select Payment Method</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <h4>Total Amount: ₹<span id="paymentAmount">0</span></h4>
+                <div class="payment-options">
+                    <button class="btn btn-primary" onclick="showPaymentForm('credit_card')">Credit Card</button>
+                    <button class="btn btn-success" onclick="showPaymentForm('esewa')">eSewa</button>
+                    <button class="btn btn-info" onclick="showPaymentForm('khalti')">Khalti</button>
+                </div>
 
-    <!-- Payment Modal -->
-    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="paymentModalLabel">Select Payment Method</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <h4>Total Amount: ₹<span id="paymentAmount">0</span></h4>
-                    <div class="payment-options">
-                        <button class="btn btn-primary" onclick="processPayment('Credit Card')">Pay with Credit Card</button>
-                        <button class="btn btn-success" onclick="processPayment('eSewa')">Pay with eSewa</button>
-                        <button class="btn btn-info" onclick="processPayment('Khalti')">Pay with Khalti</button>
+                <!-- Payment Form (Hidden by Default) -->
+                <form id="paymentForm" class="mt-3" style="display: none;">
+                    <div id="creditCardFields" style="display: none;">
+                        <input type="text" class="form-control mb-2" placeholder="Card Number" required>
+                        <input type="text" class="form-control mb-2" placeholder="Cardholder Name" required>
+                        <input type="text" class="form-control mb-2" placeholder="Expiry Date (MM/YY)" required>
+                        <input type="text" class="form-control mb-2" placeholder="CVV" required>
                     </div>
-                </div>
+                    <div id="esewaFields" style="display: none;">
+                        <input type="text" class="form-control mb-2" placeholder="eSewa ID" required>
+                    </div>
+                    <div id="khaltiFields" style="display: none;">
+                        <input type="text" class="form-control mb-2" placeholder="Khalti Mobile Number" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Submit Payment</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
+<script>
+    function showPaymentForm(method) {
+        document.getElementById("paymentForm").style.display = "block";
+        document.getElementById("creditCardFields").style.display = "none";
+        document.getElementById("esewaFields").style.display = "none";
+        document.getElementById("khaltiFields").style.display = "none";
+        
+        if (method === 'credit_card') {
+            document.getElementById("creditCardFields").style.display = "block";
+        } else if (method === 'esewa') {
+            document.getElementById("esewaFields").style.display = "block";
+        } else if (method === 'khalti') {
+            document.getElementById("khaltiFields").style.display = "block";
+        }
+    }
+</script>
 
     <footer class="bg-dark text-white text-center py-3">
-        <p>&copy; 2025 Vegetable Market. All Rights Reserved.</p>
+        <p>&copy; 2025 Ashwin Vegetable Market. All Rights Reserved.</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
